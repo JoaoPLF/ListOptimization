@@ -1,50 +1,19 @@
-# Welcome to your Expo app 👋
+# List Optimization
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Once I had to deal with a rendering issue: there was a list of complex components and updating them would cause a massive re-render of everything.
+FlatList is incredibly powerful and the problem was solved by changing some of its properties, but I've always wondered if there was a different way to solve that.
 
-## Get started
+Today, I found this blog post: https://brainsandbeards.com/blog/2022-dont-rerender-all-flatlist-items/ and decided to give it a try.
+TLDR: create a hashmap, pass a list of ids to FlatList's `data` property, and update the items of the hashmap
 
-1. Install dependencies
+This example isn't so complex, but the profiler shows the results: the optimized version does indeed prevent other items from being re-rendered.
 
-   ```bash
-   npm install
-   ```
+Here is a screenshot of the profiler after updating one of the items on the Unoptimized screen:
 
-2. Start the app
+![Screenshot of the profiler showing the unoptimized list](unoptimized.png)
 
-   ```bash
-    npx expo start
-   ```
+And now after updating one of the items on the Optimized screen:
 
-In the output, you'll find options to open the app in a
+![Screenshot of the profiler showing the optimized list](optimized.png)
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+Once again, hashmaps are saving the day. This is not to say that FlatList can't do the job with some fine tuning, but this could be an interesting long-term solution to the problem.
